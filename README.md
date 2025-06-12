@@ -33,7 +33,10 @@ This launches the multi-agent backend server that processes user mood, cravings,
 Navigate to the `frontend/` folder and open `index.html`:
 
 * Recommended: Use **Live Server** (e.g., VS Code Live Server extension).
-* Alternative: Open `index.html` directly in your browser (some features may require a local server).# Project Structure
+* Alternative: Open `index.html` directly in your browser (some features may require a local server).
+
+  ## 📁 Project Structure
+
 
   ```bash
   Multi-Agent-Lunch-Buddy-Crew/
@@ -51,7 +54,6 @@ Navigate to the `frontend/` folder and open `index.html`:
   ## Example Input
 
   Example user input:
-
 
   * Mood: “I’m feeling energetic and happy today. Looking for something special to celebrate my promotion!”
   * Cravings: `butter chicken`, `pizza`
