@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lunch Buddy - Find Your Perfect Meal</title>
+    <style>
+        :root {
+            --primary-color: #ff6b6b;
+            --secondary-color: #4ecdc4;
+            --dark-color: #292f36;
+            --light-color: #f7fff7;
+            --accent-color: #ffd166;
+            --error-color: #ff6b6b;
+            --success-color: #6bff84;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            font-size: 2rem;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        label {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        input, textarea, select {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s ease;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+        }
+        
+        .tags-input {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            min-height: 48px;
+        }
+        
+        .tag {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .tag i {
+            cursor: pointer;
+        }
+        
+        .tags-input input {
+            flex: 1;
+            min-width: 100px;
+            border: none;
+            outline: none;
+            padding: 5px 0;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 5px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        button:hover {
+            background-color: #ff5252;
+        }
+        
+        .results {
+            margin-top: 30px;
+        }
+        
+        .result-section {
+            margin-bottom: 30px;
+        }
+        
+        .result-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .mood-analysis {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .mood-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 10px 0;
+        }
+        
+        .mood-tag {
+            background-color: var(--accent-color);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .restaurant-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .restaurant-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            transition: transform 0.3s ease;
+            border: 1px solid #eee;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .restaurant-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .restaurant-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .restaurant-link {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 5px;
+            display: inline-block;
+        }
+        
+        .dishes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 10px 0;
+        }
+        
+        .dish-tag {
+            background-color: var(--accent-color);
+            color: var(--dark-color);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .reason {
+            font-style: italic;
+            color: #555;
+            margin-top: auto;
+            padding-top: 10px;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: var(--secondary-color);
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            background-color: #ffebee;
+            color: var(--error-color);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        .recommendations-headline {
+            text-align: center;
+            margin: 40px 0 20px;
+            color: var(--primary-color);
+            font-size: 1.8rem;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+            }
+            
+            .restaurant-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-utensils"></i>
+                    <h1>Lunch Buddy</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="content">
+            <h2>Find Your Perfect Lunch Spot</h2>
+            <p>Tell us a bit about your mood, preferences, and location for personalized restaurant recommendations.</p>
+            
+            <form id="lunch-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="mood-text">How are you feeling today?</label>
+                        <textarea id="mood-text" rows="3" placeholder="Example: I'm feeling energetic and happy today. Looking for something special to celebrate my promotion!"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="location">Your Location</label>
+                        <input type="text" id="location" placeholder="e.g., New York, Lahore, Tokyo">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>What type of food are you craving?</label>
+                    <div class="tags-input" id="dishes-tags">
+                        <input type="text" placeholder="Add dish (e.g., butter chicken, pizza)" id="dish-input">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Dietary Preferences</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="vegetarian">
+                            <label for="vegetarian">Vegetarian</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="vegan">
+                            <label for="vegan">Vegan</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="gluten-free">
+                            <label for="gluten-free">Gluten-Free</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="halal">
+                            <label for="halal">Halal</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="dairy-free">
+                            <label for="dairy-free">Dairy-Free</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit">
+                    <i class="fas fa-search"></i> Find My Lunch Spot
+                </button>
+            </form>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Finding your perfect lunch spot...</p>
+            </div>
+            
+            <div class="error-message" id="error-message"></div>
+        </div>
+        
+        <div id="results-container" class="hidden">
+            <h2 class="recommendations-headline">Your Personalized Recommendations</h2>
+            
+            <div class="results">
+                <div class="result-section">
+                    <h3>Understanding Your Mood</h3>
+                    <div id="mood-results" class="mood-analysis"></div>
+                </div>
+                
+                <div class="result-section">
+                    <h3>Restaurants You'll Love</h3>
+                    <div id="restaurant-results" class="restaurant-cards"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 Lunch Buddy - Find Your Perfect Meal</p>
+    </footer>
+    
+    <script>
+        // API Endpoint
+        const API_BASE_URL = 'http://localhost:8002';
+        
+        // Setup Tags Input
+        function setupTagsInput(inputId, tagsContainerId, defaultTags = []) {
+            const input = document.getElementById(inputId);
+            const tagsContainer = document.getElementById(tagsContainerId);
+            
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ',') {
+                    e.preventDefault();
+                    
+                    const tagText = input.value.trim();
+                    if (tagText) {
+                        addTag(tagText, tagsContainer);
+                        input.value = '';
+                    }
+                }
+            });
+            
+            // Add default tags
+            defaultTags.forEach(tag => {
+                addTag(tag, tagsContainer);
+            });
+        }
+        
+        function addTag(text, container) {
+            const tag = document.createElement('div');
+            tag.classList.add('tag');
+            tag.innerHTML = `
+                ${text}
+                <i class="fas fa-times"></i>
+            `;
+            
+            // Remove tag on click
+            tag.querySelector('i').addEventListener('click', () => {
+                container.removeChild(tag);
+            });
+            
+            // Insert tag before the input
+            container.insertBefore(tag, container.querySelector('input'));
+        }
+        
+        function getTagsFromContainer(containerId) {
+            const tags = [];
+            document.querySelectorAll(`#${containerId} .tag`).forEach(tag => {
+                // Only get the text content, not including the 'x' icon
+                const tagText = tag.textContent.trim();
+                tags.push(tagText);
+            });
+            return tags;
+        }
+        
+        // Initialize tags input with default dishes
+        setupTagsInput('dish-input', 'dishes-tags', ['butter chicken', 'pizza']);
+        
+        // Main Form Handler
+        document.getElementById('lunch-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const moodText = document.getElementById('mood-text').value.trim();
+            const location = document.getElementById('location').value.trim();
+            const dishes = getTagsFromContainer('dishes-tags');
+            
+            // Get dietary preferences
+            const dietaryPreferences = [];
+            if (document.getElementById('vegetarian').checked) dietaryPreferences.push('vegetarian');
+            if (document.getElementById('vegan').checked) dietaryPreferences.push('vegan');
+            if (document.getElementById('gluten-free').checked) dietaryPreferences.push('gluten-free');
+            if (document.getElementById('halal').checked) dietaryPreferences.push('halal');
+            if (document.getElementById('dairy-free').checked) dietaryPreferences.push('dairy-free');
+            
+            // Validation
+            if (!moodText) {
+                showError('Please tell us about your mood');
+                return;
+            }
+            
+            if (!location) {
+                showError('Please enter your location');
+                return;
+            }
+            
+            if (dishes.length === 0) {
+                showError('Please add at least one dish you\'re interested in');
+                return;
+            }
+            
+            // Show loading, hide error
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('error-message').style.display = 'none';
+            document.getElementById('results-container').classList.add('hidden');
+            
+            try {
+                // Step 1: Analyze Mood
+                const moodResponse = await fetch(`${API_BASE_URL}/analyze-mood`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ mood_text: moodText })
+                });
+                
+                if (!moodResponse.ok) {
+                    throw new Error('Failed to analyze mood');
+                }
+                
+                const moodData = await moodResponse.json();
+                
+                // Step 2: Find Restaurants
+                const restaurantResponse = await fetch(`${API_BASE_URL}/find-restaurants`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ location, dishes })
+                });
+                
+                if (!restaurantResponse.ok) {
+                    throw new Error('Failed to find restaurants');
+                }
+                
+                const restaurantData = await restaurantResponse.json();
+                
+                // If user has dietary preferences, filter the results in the frontend
+                let filteredRestaurants = restaurantData;
+                if (dietaryPreferences.length > 0) {
+                    // We're doing a simple filter here, but in a real app you'd 
+                    // probably want to use the backend for this
+                    filteredRestaurants = restaurantData.filter(restaurant => {
+                        // This is a simplified example - in reality, you'd need more sophisticated filtering
+                        // based on the actual restaurant data structure
+                        const description = (restaurant.reason || '').toLowerCase();
+                        return dietaryPreferences.some(pref => description.includes(pref.toLowerCase()));
+                    });
+                    
+                    // If all restaurants were filtered out, just return the original list
+                    if (filteredRestaurants.length === 0) {
+                        filteredRestaurants = restaurantData;
+                    }
+                }
+                
+                // Display results
+                displayResults(moodData, filteredRestaurants);
+                
+            } catch (error) {
+                showError(error.message);
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        });
+        
+        // Display Results
+        function displayResults(moodData, restaurantData) {
+            // Display mood results
+            const moodResultsContainer = document.getElementById('mood-results');
+            if (moodData && moodData.Mood) {
+                moodResultsContainer.innerHTML = `
+                    <div class="mood-tags">
+                        ${moodData.Mood.map(mood => `<div class="mood-tag">${mood}</div>`).join('')}
+                    </div>
+                    <p><strong>Confidence:</strong> ${moodData.Confidence || 'N/A'}</p>
+                    <p>${moodData.Notes || 'No additional notes'}</p>
+                `;
+            } else {
+                moodResultsContainer.innerHTML = '<p>Could not analyze mood</p>';
+            }
+            
+            // Display restaurant results
+            const restaurantResultsContainer = document.getElementById('restaurant-results');
+            if (restaurantData && restaurantData.length > 0) {
+                restaurantResultsContainer.innerHTML = restaurantData.map(restaurant => `
+                    <div class="restaurant-card">
+                        <div class="restaurant-name">${restaurant.name || 'Unknown Restaurant'}</div>
+                        
+                        <div class="dishes">
+                            ${(restaurant.recommended_dishes || []).map(dish => `<div class="dish-tag">${dish}</div>`).join('')}
+                        </div>
+                        
+                        <div class="reason">${restaurant.reason || 'No additional information available'}</div>
+                        
+                        ${restaurant.link ? `<a href="${restaurant.link}" class="restaurant-link" target="_blank">Visit Website <i class="fas fa-external-link-alt"></i></a>` : ''}
+                    </div>
+                `).join('');
+            } else {
+                restaurantResultsContainer.innerHTML = '<p>No restaurants found matching your criteria</p>';
+            }
+            
+            // Show results container
+            document.getElementById('results-container').classList.remove('hidden');
+            
+            // Scroll to results
+            document.getElementById('results-container').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Utility Functions
+        function showError(message) {
+            const errorElement = document.getElementById('error-message');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
